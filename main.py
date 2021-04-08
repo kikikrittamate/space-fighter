@@ -3,7 +3,7 @@ from random import randint, random
 
 import tkinter as tk
 
-from gamelib import Sprite, GameApp, Text
+from gamelib import Sprite, GameApp, Text, KeyboardHandler
 
 from consts import *
 from elements import Ship, Bullet, Enemy
@@ -53,9 +53,9 @@ class SpaceGame(GameApp):
             self.bomb_power = 0
 
             self.bomb_canvas_id = self.canvas.create_oval(
-                self.ship.x - BOMB_RADIUS, 
+                self.ship.x - BOMB_RADIUS,
                 self.ship.y - BOMB_RADIUS,
-                self.ship.x + BOMB_RADIUS, 
+                self.ship.x + BOMB_RADIUS,
                 self.ship.y + BOMB_RADIUS
             )
 
@@ -67,9 +67,6 @@ class SpaceGame(GameApp):
 
             self.update_bomb_power_text()
 
-    def update_score_text(self):
-        self.score_text.set_text('Score: %d' % self.score)
-
     def update_bomb_power_text(self):
         self.bomb_power_text.set_text('Power: %d%%' % self.bomb_power)
 
@@ -79,6 +76,7 @@ class SpaceGame(GameApp):
     def update_score(self):
         self.score_wait += 1
         if self.score_wait >= SCORE_WAIT:
+            # self.score += 1
             self.score.value += 1
 
             self.score_wait = 0
@@ -146,7 +144,7 @@ class SpaceGame(GameApp):
 
     def process_collisions(self):
         self.process_bullet_enemy_collisions()
-        #self.process_ship_enemy_collision()
+        # self.process_ship_enemy_collision()
 
     def update_and_filter_deleted(self, elements):
         new_list = []
@@ -168,21 +166,21 @@ class SpaceGame(GameApp):
         self.update_score()
         self.update_bomb_power()
 
-    def on_key_pressed(self, event):
-        if event.keysym == 'Left':
-            self.ship.start_turn('LEFT')
-        elif event.keysym == 'Right':
-            self.ship.start_turn('RIGHT')
-        elif event.char == ' ':
-            self.ship.fire()
-        elif event.char.upper() == 'Z':
-            self.bomb()
-
-    def on_key_released(self, event):
-        if event.keysym == 'Left':
-            self.ship.stop_turn('LEFT')
-        elif event.keysym == 'Right':
-            self.ship.stop_turn('RIGHT')
+    ''' def on_key_pressed(self, event):
+         if event.keysym == 'Left':
+             self.ship.start_turn('LEFT')
+         elif event.keysym == 'Right':
+             self.ship.start_turn('RIGHT')
+         elif event.char == ' ':
+             self.ship.fire()
+         elif event.char.upper() == 'Z':
+             self.bomb()
+    
+     def on_key_released(self, event):
+         if event.keysym == 'Left':
+             self.ship.stop_turn('LEFT')
+         elif event.keysym == 'Right':
+             self.ship.stop_turn('RIGHT')'''
 
     def init_key_handlers(self):
         key_pressed_handler = ShipMovementKeyPressedHandler(self, self.ship)
